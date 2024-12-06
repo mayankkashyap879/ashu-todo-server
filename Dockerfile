@@ -13,11 +13,18 @@ RUN npm install --production
 # Copy app source code
 COPY . .
 
-# Exclude development files
-COPY .env.example .env
+# Create default environment variables
+ENV PORT=4001 \
+    NODE_ENV=production \
+    MONGODB_URI=mongodb://localhost:27017/Lgg \
+    ALLOWED_ORIGIN=http://localhost:3001
+
+# Add healthcheck
+HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
+  CMD curl -f http://localhost:${PORT}/health || exit 1
 
 # Expose port
-EXPOSE 4001
+EXPOSE ${PORT}
 
 # Start the server
 CMD ["node", "server.js"]

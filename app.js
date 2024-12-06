@@ -23,6 +23,32 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/todos", handlerRoute);
 
+app.get('/health', (req, res) => {
+    try {
+        // Check MongoDB connection
+        if (mongoose.connection.readyState === 1) {
+            res.status(200).json({
+                status: 'healthy',
+                timestamp: new Date(),
+                uptime: process.uptime(),
+                mongoConnection: 'connected'
+            });
+        } else {
+            res.status(503).json({
+                status: 'unhealthy',
+                timestamp: new Date(),
+                mongoConnection: 'disconnected'
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            timestamp: new Date(),
+            error: error.message
+        });
+    }
+});
+
 // Database connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/Lgg';
 ConnectDB(MONGODB_URI)
