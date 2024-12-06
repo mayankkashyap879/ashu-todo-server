@@ -1,9 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const TodoDb = require("../models/model.js");
+const TodoDb = require("../models/Todo.js");
 
 async function GetAlltheTask(req, res) {
-    console.log("GetAlltheTask");
     try {
         const { status, priority, search, sortBy } = req.query;
         let query = {};
