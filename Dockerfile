@@ -27,4 +27,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
 EXPOSE ${PORT}
 
 # Start the server
-CMD ["node", "server.js"]
+CMD ["node", "app.js"]
